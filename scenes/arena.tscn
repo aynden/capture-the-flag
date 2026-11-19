@@ -1,0 +1,1226 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/arena_builder.gd" id="1_ua730"]
+[ext_resource type="Texture2D" path="res://assets/textures/glow_soft.png" id="2_6dm5u"]
+[ext_resource type="Shader" path="res://shaders/turf_arena.gdshader" id="3_sbyfl"]
+[ext_resource type="Texture2D" path="res://assets/textures/turf_detail_normal.png" id="4_bt1tq"]
+[ext_resource type="Texture2D" path="res://assets/textures/turf_noise.png" id="5_yje0t"]
+[ext_resource type="PackedScene" path="res://assets/models/flag_pedestal_blue.glb" id="6_nqmqx"]
+[ext_resource type="Shader" path="res://shaders/base_ring.gdshader" id="7_swrx8"]
+[ext_resource type="PackedScene" path="res://assets/models/flag_pedestal_red.glb" id="8_8jgwj"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_temple_gold.glb" id="9_m44an"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_dorito_gold.glb" id="10_u80kj"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_snake_gold.glb" id="11_q2sf5"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_cylinder_blue.glb" id="12_wdrsa"]
+[ext_resource type="PackedScene" path="res://assets/models/barricade_wood.glb" id="13_7jf4w"]
+[ext_resource type="PackedScene" path="res://assets/models/crate_stack.glb" id="14_yln86"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_dorito_blue.glb" id="15_hn1ds"]
+[ext_resource type="PackedScene" path="res://assets/models/sandbag_wall.glb" id="16_femlh"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_snake_blue.glb" id="17_jnmui"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_cylinder_red.glb" id="18_nag6q"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_dorito_red.glb" id="19_6ubnd"]
+[ext_resource type="PackedScene" path="res://assets/models/bunker_snake_red.glb" id="20_18ihl"]
+[ext_resource type="PackedScene" path="res://assets/models/arena_wall_segment.glb" id="21_ikwpp"]
+[ext_resource type="PackedScene" path="res://assets/models/arena_corner_tower.glb" id="22_kjcr2"]
+[ext_resource type="PackedScene" path="res://assets/models/floodlight_tower.glb" id="23_5u5ld"]
+[ext_resource type="PackedScene" path="res://assets/models/spectator_bleacher.glb" id="24_00ph2"]
+[ext_resource type="PackedScene" path="res://assets/models/stylized_pine.glb" id="25_grxjf"]
+[ext_resource type="PackedScene" path="res://assets/models/stylized_oak.glb" id="26_6d1h2"]
+[ext_resource type="PackedScene" path="res://assets/models/stylized_bush.glb" id="27_ur278"]
+[ext_resource type="PackedScene" path="res://assets/models/flag_blue.glb" id="28_q00cy"]
+[ext_resource type="PackedScene" path="res://assets/models/flag_red.glb" id="29_rvjci"]
+[ext_resource type="PackedScene" path="res://assets/models/player_blue.glb" id="30_7evfb"]
+[ext_resource type="PackedScene" path="res://assets/models/player_red.glb" id="31_805c5"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj5h5"]
+sky_top_color = Color(0.2, 0.46, 0.82, 1)
+sky_horizon_color = Color(0.96, 0.72, 0.48, 1)
+sky_curve = 0.14
+ground_bottom_color = Color(0.18, 0.28, 0.16, 1)
+ground_horizon_color = Color(0.76, 0.62, 0.46, 1)
+sun_angle_max = 28.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_hamom"]
+sky_material = SubResource("ProceduralSkyMaterial_fj5h5")
+
+[sub_resource type="Environment" id="Environment_s54cu"]
+background_mode = 2
+sky = SubResource("Sky_hamom")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.65
+ambient_light_energy = 0.72
+tonemap_mode = 3
+tonemap_exposure = 1.06
+tonemap_white = 6.0
+ssao_enabled = true
+ssao_radius = 1.15
+ssao_intensity = 1.45
+ssao_power = 1.6
+glow_enabled = true
+glow_intensity = 0.45
+glow_strength = 0.85
+glow_bloom = 0.14
+glow_hdr_threshold = 1.08
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.96, 0.84, 0.68, 1)
+fog_density = 0.0022
+fog_depth_begin = 42.0
+fog_depth_end = 130.0
+adjustment_enabled = true
+adjustment_contrast = 1.05
+adjustment_saturation = 1.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8nnyq"]
+transparency = 1
+blend_mode = 1
+depth_draw_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.9, 0.62, 0.2)
+albedo_texture = ExtResource("2_6dm5u")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_1iiwa"]
+size = Vector2(0.28, 0.28)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hboy2"]
+render_priority = 0
+shader = ExtResource("3_sbyfl")
+shader_parameter/detail_normal = ExtResource("4_bt1tq")
+shader_parameter/noise_tex = ExtResource("5_yje0t")
+shader_parameter/field_half_size = Vector2(29, 18)
+shader_parameter/base_x = 23.0
+shader_parameter/grass_light = null
+shader_parameter/grass_dark = null
+shader_parameter/outer_grass = null
+shader_parameter/dirt_path = null
+shader_parameter/chalk_color = null
+shader_parameter/blue_paint = null
+shader_parameter/blue_paint_dark = null
+shader_parameter/red_paint = null
+shader_parameter/red_paint_dark = null
+shader_parameter/apron_concrete = null
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_spnam"]
+size = Vector2(340, 280)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vfx8u"]
+size = Vector3(160, 1, 130)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aup2b"]
+render_priority = 0
+shader = ExtResource("7_swrx8")
+shader_parameter/ring_color = Color(0.08, 0.65, 1, 1)
+shader_parameter/pulse_speed = null
+shader_parameter/urgency = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4nhhj"]
+size = Vector2(7.6, 7.6)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7862"]
+render_priority = 0
+shader = ExtResource("7_swrx8")
+shader_parameter/ring_color = Color(1, 0.3, 0.12, 1)
+shader_parameter/pulse_speed = null
+shader_parameter/urgency = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_kjqme"]
+size = Vector2(7.6, 7.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bmakn"]
+size = Vector3(2.8, 2.05, 1.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n5h7s"]
+size = Vector3(2.2, 2, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p3wad"]
+size = Vector3(2.2, 2, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6b7ou"]
+size = Vector3(3.6, 1.15, 1.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b76a6"]
+size = Vector3(3.6, 1.15, 1.15)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ji5dc"]
+height = 2.3
+radius = 0.88
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1cjps"]
+height = 2.3
+radius = 0.88
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_83tba"]
+size = Vector3(3.2, 1.6, 0.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3cr31"]
+size = Vector3(3.2, 1.6, 0.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h82kt"]
+size = Vector3(2.45, 1.9, 1.35)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h3ydh"]
+size = Vector3(2.2, 2, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_27x07"]
+size = Vector3(2.2, 2, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lju4b"]
+size = Vector3(2.8, 1.05, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wl1om"]
+size = Vector3(3.6, 1.15, 1.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_caedn"]
+size = Vector3(3.6, 1.15, 1.15)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xplsa"]
+height = 2.3
+radius = 0.88
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2ktue"]
+height = 2.3
+radius = 0.88
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p36uw"]
+size = Vector3(3.2, 1.6, 0.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tq647"]
+size = Vector3(3.2, 1.6, 0.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pwta3"]
+size = Vector3(2.45, 1.9, 1.35)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_32wy6"]
+size = Vector3(2.2, 2, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_scwkl"]
+size = Vector3(2.2, 2, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xbiqi"]
+size = Vector3(2.8, 1.05, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pq4ox"]
+size = Vector3(3.6, 1.15, 1.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ln0h2"]
+size = Vector3(3.6, 1.15, 1.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_27voo"]
+size = Vector3(60, 3.6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xi2kl"]
+size = Vector3(60, 3.6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hpkq7"]
+size = Vector3(1, 3.6, 38)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_38tk7"]
+size = Vector3(1, 3.6, 38)
+
+[node name="Arena" type="Node3D" unique_id=970469088]
+script = ExtResource("1_ua730")
+
+[node name="Environment" type="Node3D" parent="." unique_id=951756722]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1955974576]
+environment = SubResource("Environment_s54cu")
+
+[node name="GoldenHourSun" type="DirectionalLight3D" parent="Environment" unique_id=300064684]
+transform = Transform3D(0.8290376, 0.3741731, -0.4155613, 0, 0.7431448, 0.6691306, 0.5591929, -0.55473447, 0.616095, 0, 0, 0)
+light_color = Color(1, 0.9, 0.73, 1)
+light_energy = 2.05
+shadow_enabled = true
+shadow_bias = 0.04
+shadow_normal_bias = 1.2
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 110.0
+
+[node name="SkyFillLight" type="DirectionalLight3D" parent="Environment" unique_id=547307174]
+transform = Transform3D(-0.81915206, -0.46984634, 0.32898995, 0, 0.57357645, 0.81915206, -0.57357645, 0.6710101, -0.46984634, 0, 0, 0)
+light_color = Color(0.56, 0.76, 1, 1)
+light_energy = 0.36
+
+[node name="GoldenHourMotes" type="CPUParticles3D" parent="Environment" unique_id=500838128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 0)
+material_override = SubResource("StandardMaterial3D_8nnyq")
+cast_shadow = 0
+amount = 45
+lifetime = 8.0
+preprocess = 4.0
+mesh = SubResource("QuadMesh_1iiwa")
+emission_shape = 3
+emission_box_extents = Vector3(26, 3.2, 16)
+gravity = Vector3(0.14, 0.03, 0.06)
+initial_velocity_min = 0.12
+initial_velocity_max = 0.32
+
+[node name="TurfGround" type="StaticBody3D" parent="." unique_id=1257374274]
+collision_mask = 0
+
+[node name="TurfMesh" type="MeshInstance3D" parent="TurfGround" unique_id=1402684746]
+material_override = SubResource("ShaderMaterial_hboy2")
+mesh = SubResource("PlaneMesh_spnam")
+
+[node name="TurfCollision" type="CollisionShape3D" parent="TurfGround" unique_id=1737577243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_vfx8u")
+
+[node name="Bases" type="Node3D" parent="." unique_id=1352528649]
+
+[node name="BlueBasePedestal" type="Node3D" parent="Bases" unique_id=387063993 instance=ExtResource("6_nqmqx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
+
+[node name="BlueCaptureRing" type="MeshInstance3D" parent="Bases" unique_id=146726459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0.04, 0)
+material_override = SubResource("ShaderMaterial_aup2b")
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_4nhhj")
+
+[node name="BlueBaseLight" type="OmniLight3D" parent="Bases" unique_id=1946064351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 1.8, 0)
+light_color = Color(0.264, 0.71999997, 1, 1)
+light_energy = 1.65
+omni_range = 7.5
+
+[node name="RedBasePedestal" type="Node3D" parent="Bases" unique_id=1094733542 instance=ExtResource("8_8jgwj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, 0)
+
+[node name="RedCaptureRing" type="MeshInstance3D" parent="Bases" unique_id=24032324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0.04, 0)
+material_override = SubResource("ShaderMaterial_a7862")
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_kjqme")
+
+[node name="RedBaseLight" type="OmniLight3D" parent="Bases" unique_id=2127407292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 1.8, 0)
+light_color = Color(1, 0.44, 0.296, 1)
+light_energy = 1.65
+omni_range = 7.5
+
+[node name="TacticalCover" type="Node3D" parent="." unique_id=1465661721]
+
+[node name="CenterTempleGold" type="StaticBody3D" parent="TacticalCover" unique_id=1515076904]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.8, 1.55)
+metadata/minimap_color = Color(0.95, 0.72, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/CenterTempleGold" unique_id=519741980 instance=ExtResource("9_m44an")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/CenterTempleGold" unique_id=66334744]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 0)
+shape = SubResource("BoxShape3D_bmakn")
+
+[node name="CenterDoritoNorth" type="StaticBody3D" parent="TacticalCover" unique_id=1768963738]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -7.8)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.2, 2.2)
+metadata/minimap_color = Color(0.95, 0.72, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/CenterDoritoNorth" unique_id=2008645155 instance=ExtResource("10_u80kj")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/CenterDoritoNorth" unique_id=315647264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_n5h7s")
+
+[node name="CenterDoritoSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1911183975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.8)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.2, 2.2)
+metadata/minimap_color = Color(0.95, 0.72, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/CenterDoritoSouth" unique_id=534986563 instance=ExtResource("10_u80kj")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/CenterDoritoSouth" unique_id=331944692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_p3wad")
+
+[node name="CenterSnakeNorth" type="StaticBody3D" parent="TacticalCover" unique_id=2117725981]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.6, 1.15)
+metadata/minimap_color = Color(0.95, 0.72, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/CenterSnakeNorth" unique_id=60725453 instance=ExtResource("11_q2sf5")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/CenterSnakeNorth" unique_id=1189817240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+shape = SubResource("BoxShape3D_6b7ou")
+
+[node name="CenterSnakeSouth" type="StaticBody3D" parent="TacticalCover" unique_id=21430238]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.6, 1.15)
+metadata/minimap_color = Color(0.95, 0.72, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/CenterSnakeSouth" unique_id=116675898 instance=ExtResource("11_q2sf5")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/CenterSnakeSouth" unique_id=689720981]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+shape = SubResource("BoxShape3D_b76a6")
+
+[node name="BlueCylinderNorth" type="StaticBody3D" parent="TacticalCover" unique_id=1470205591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 0, -4.4)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(1.76, 1.76)
+metadata/minimap_color = Color(0.18, 0.55, 0.96, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueCylinderNorth" unique_id=1812079935 instance=ExtResource("12_wdrsa")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueCylinderNorth" unique_id=973011115]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+shape = SubResource("CylinderShape3D_ji5dc")
+
+[node name="BlueCylinderSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1613081139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 0, 4.4)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(1.76, 1.76)
+metadata/minimap_color = Color(0.18, 0.55, 0.96, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueCylinderSouth" unique_id=1246658346 instance=ExtResource("12_wdrsa")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueCylinderSouth" unique_id=1228508232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+shape = SubResource("CylinderShape3D_1cjps")
+
+[node name="BlueBarricadeNorth" type="StaticBody3D" parent="TacticalCover" unique_id=981766119]
+transform = Transform3D(-0.40673658, 0, 0.9135455, 0, 1, 0, -0.9135455, 0, -0.40673658, -10.5, 0, -11.5)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.2, 0.65)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueBarricadeNorth" unique_id=1512947207 instance=ExtResource("13_7jf4w")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueBarricadeNorth" unique_id=830486544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_83tba")
+
+[node name="BlueBarricadeSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1258313749]
+transform = Transform3D(0.4067366, 0, 0.9135455, 0, 1, 0, -0.9135455, 0, 0.4067366, -10.5, 0, 11.5)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.2, 0.65)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueBarricadeSouth" unique_id=1073285928 instance=ExtResource("13_7jf4w")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueBarricadeSouth" unique_id=534307306]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_3cr31")
+
+[node name="BlueCrateStack" type="StaticBody3D" parent="TacticalCover" unique_id=1249009195]
+transform = Transform3D(0.9659258, 0, -0.25881904, 0, 1, 0, 0.25881904, 0, 0.9659258, -12.8, 0, 0)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.45, 1.35)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueCrateStack" unique_id=1492483259 instance=ExtResource("14_yln86")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueCrateStack" unique_id=375796488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_h82kt")
+
+[node name="BlueDoritoNorth" type="StaticBody3D" parent="TacticalCover" unique_id=2056601943]
+transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -16.8, 0, -7.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.2, 2.2)
+metadata/minimap_color = Color(0.18, 0.55, 0.96, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueDoritoNorth" unique_id=179493215 instance=ExtResource("15_hn1ds")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueDoritoNorth" unique_id=1165721639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_h3ydh")
+
+[node name="BlueDoritoSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1136658517]
+transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -16.8, 0, 7.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.2, 2.2)
+metadata/minimap_color = Color(0.18, 0.55, 0.96, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueDoritoSouth" unique_id=638911362 instance=ExtResource("15_hn1ds")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueDoritoSouth" unique_id=58701722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_27x07")
+
+[node name="BlueSandbagWall" type="StaticBody3D" parent="TacticalCover" unique_id=116792643]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -18.2, 0, 0)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.8, 1)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueSandbagWall" unique_id=1594946651 instance=ExtResource("16_femlh")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueSandbagWall" unique_id=1053071679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, 0)
+shape = SubResource("BoxShape3D_lju4b")
+
+[node name="BlueSnakeNorth" type="StaticBody3D" parent="TacticalCover" unique_id=1994040607]
+transform = Transform3D(0.95105654, 0, -0.309017, 0, 1, 0, 0.309017, 0, 0.95105654, -20.5, 0, -13.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.6, 1.15)
+metadata/minimap_color = Color(0.18, 0.55, 0.96, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueSnakeNorth" unique_id=1241075835 instance=ExtResource("17_jnmui")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueSnakeNorth" unique_id=140341034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+shape = SubResource("BoxShape3D_wl1om")
+
+[node name="BlueSnakeSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1871696357]
+transform = Transform3D(0.95105654, 0, 0.309017, 0, 1, 0, -0.309017, 0, 0.95105654, -20.5, 0, 13.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.6, 1.15)
+metadata/minimap_color = Color(0.18, 0.55, 0.96, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/BlueSnakeSouth" unique_id=713468149 instance=ExtResource("17_jnmui")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/BlueSnakeSouth" unique_id=1567996752]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+shape = SubResource("BoxShape3D_caedn")
+
+[node name="RedCylinderNorth" type="StaticBody3D" parent="TacticalCover" unique_id=1147819829]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8, 0, -4.4)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(1.76, 1.76)
+metadata/minimap_color = Color(0.95, 0.3, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedCylinderNorth" unique_id=1281072405 instance=ExtResource("18_nag6q")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedCylinderNorth" unique_id=1033554502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+shape = SubResource("CylinderShape3D_xplsa")
+
+[node name="RedCylinderSouth" type="StaticBody3D" parent="TacticalCover" unique_id=891498415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8, 0, 4.4)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(1.76, 1.76)
+metadata/minimap_color = Color(0.95, 0.3, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedCylinderSouth" unique_id=716173741 instance=ExtResource("18_nag6q")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedCylinderSouth" unique_id=1334746484]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+shape = SubResource("CylinderShape3D_2ktue")
+
+[node name="RedBarricadeNorth" type="StaticBody3D" parent="TacticalCover" unique_id=2109085235]
+transform = Transform3D(-0.40673658, 0, -0.9135455, 0, 1, 0, 0.9135455, 0, -0.40673658, 10.5, 0, -11.5)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.2, 0.65)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedBarricadeNorth" unique_id=1637240802 instance=ExtResource("13_7jf4w")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedBarricadeNorth" unique_id=157280458]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_p36uw")
+
+[node name="RedBarricadeSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1275489791]
+transform = Transform3D(0.4067366, 0, -0.9135455, 0, 1, 0, 0.9135455, 0, 0.4067366, 10.5, 0, 11.5)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.2, 0.65)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedBarricadeSouth" unique_id=2017242154 instance=ExtResource("13_7jf4w")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedBarricadeSouth" unique_id=1009900930]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_tq647")
+
+[node name="RedCrateStack" type="StaticBody3D" parent="TacticalCover" unique_id=1349813523]
+transform = Transform3D(0.9659258, 0, 0.25881904, 0, 1, 0, -0.25881904, 0, 0.9659258, 12.8, 0, 0)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.45, 1.35)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedCrateStack" unique_id=407229803 instance=ExtResource("14_yln86")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedCrateStack" unique_id=2119117472]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_pwta3")
+
+[node name="RedDoritoNorth" type="StaticBody3D" parent="TacticalCover" unique_id=2016965136]
+transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 16.8, 0, -7.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.2, 2.2)
+metadata/minimap_color = Color(0.95, 0.3, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedDoritoNorth" unique_id=1372075439 instance=ExtResource("19_6ubnd")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedDoritoNorth" unique_id=607566413]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_32wy6")
+
+[node name="RedDoritoSouth" type="StaticBody3D" parent="TacticalCover" unique_id=1177620528]
+transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, 16.8, 0, 7.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.2, 2.2)
+metadata/minimap_color = Color(0.95, 0.3, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedDoritoSouth" unique_id=519717537 instance=ExtResource("19_6ubnd")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedDoritoSouth" unique_id=1884814681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_scwkl")
+
+[node name="RedSandbagWall" type="StaticBody3D" parent="TacticalCover" unique_id=1015639057]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 18.2, 0, 0)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(2.8, 1)
+metadata/minimap_color = Color(0.68, 0.46, 0.28, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedSandbagWall" unique_id=254857649 instance=ExtResource("16_femlh")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedSandbagWall" unique_id=1979622768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, 0)
+shape = SubResource("BoxShape3D_xbiqi")
+
+[node name="RedSnakeNorth" type="StaticBody3D" parent="TacticalCover" unique_id=167303529]
+transform = Transform3D(0.95105654, 0, 0.309017, 0, 1, 0, -0.309017, 0, 0.95105654, 20.5, 0, -13.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.6, 1.15)
+metadata/minimap_color = Color(0.95, 0.3, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedSnakeNorth" unique_id=1384680548 instance=ExtResource("20_18ihl")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedSnakeNorth" unique_id=970745952]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+shape = SubResource("BoxShape3D_pq4ox")
+
+[node name="RedSnakeSouth" type="StaticBody3D" parent="TacticalCover" unique_id=574634250]
+transform = Transform3D(0.95105654, 0, -0.309017, 0, 1, 0, 0.309017, 0, 0.95105654, 20.5, 0, 13.2)
+collision_layer = 2
+collision_mask = 0
+metadata/minimap_size = Vector2(3.6, 1.15)
+metadata/minimap_color = Color(0.95, 0.3, 0.18, 1)
+
+[node name="Visual" type="Node3D" parent="TacticalCover/RedSnakeSouth" unique_id=32023542 instance=ExtResource("20_18ihl")]
+
+[node name="Collider" type="CollisionShape3D" parent="TacticalCover/RedSnakeSouth" unique_id=899210449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+shape = SubResource("BoxShape3D_ln0h2")
+
+[node name="StadiumPerimeter" type="Node3D" parent="." unique_id=1661644159]
+
+[node name="PerimeterWalls" type="StaticBody3D" parent="StadiumPerimeter" unique_id=1833942176]
+collision_mask = 0
+
+[node name="arena_wall_segment" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1833275716 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, -25.6, 0, -18.65)
+
+[node name="@Node3D@2" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1464528108 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, -19.2, 0, -18.65)
+
+[node name="@Node3D@3" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=444858720 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, -12.8, 0, -18.65)
+
+[node name="@Node3D@4" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=2001390556 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, -6.4, 0, -18.65)
+
+[node name="@Node3D@5" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=2106247165 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, 0, 0, -18.65)
+
+[node name="@Node3D@6" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=971174054 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, 6.4, 0, -18.65)
+
+[node name="@Node3D@7" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=443252755 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, 12.8, 0, -18.65)
+
+[node name="@Node3D@8" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=963772629 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, 19.2, 0, -18.65)
+
+[node name="@Node3D@9" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=608747729 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-1.07, 0, -8.742278e-08, 0, 1, 0, 9.3542376e-08, 0, -1, 25.6, 0, -18.65)
+
+[node name="@CollisionShape3D@10" type="CollisionShape3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1771823453]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -18.65)
+shape = SubResource("BoxShape3D_27voo")
+
+[node name="@Node3D@11" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=874765732 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, -25.6, 0, 18.65)
+
+[node name="@Node3D@12" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1030768132 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, -19.2, 0, 18.65)
+
+[node name="@Node3D@13" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1807999197 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, -12.8, 0, 18.65)
+
+[node name="@Node3D@14" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1395019347 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, -6.4, 0, 18.65)
+
+[node name="@Node3D@15" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1537202168 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18.65)
+
+[node name="@Node3D@16" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=2100704092 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, 6.4, 0, 18.65)
+
+[node name="@Node3D@17" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=846565717 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 0, 18.65)
+
+[node name="@Node3D@18" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=942027553 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, 19.2, 0, 18.65)
+
+[node name="@Node3D@19" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=341462698 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(1.07, 0, 0, 0, 1, 0, 0, 0, 1, 25.6, 0, 18.65)
+
+[node name="@CollisionShape3D@20" type="CollisionShape3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=16382565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 18.65)
+shape = SubResource("BoxShape3D_xi2kl")
+
+[node name="@Node3D@21" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=2079549150 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, -1, 0, 1, 0, 1.22, 0, -4.371139e-08, -29.65, 0, -12.8)
+
+[node name="@Node3D@22" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=384728701 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, -1, 0, 1, 0, 1.22, 0, -4.371139e-08, -29.65, 0, -6.4)
+
+[node name="@Node3D@23" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1657877426 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, -1, 0, 1, 0, 1.22, 0, -4.371139e-08, -29.65, 0, 0)
+
+[node name="@Node3D@24" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1650171788 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, -1, 0, 1, 0, 1.22, 0, -4.371139e-08, -29.65, 0, 6.4)
+
+[node name="@Node3D@25" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1809599700 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, -1, 0, 1, 0, 1.22, 0, -4.371139e-08, -29.65, 0, 12.8)
+
+[node name="@CollisionShape3D@26" type="CollisionShape3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=97836853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.65, 1.8, 0)
+shape = SubResource("BoxShape3D_hpkq7")
+
+[node name="@Node3D@27" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1191705769 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, 1, 0, 1, 0, -1.22, 0, -4.371139e-08, 29.65, 0, -12.8)
+
+[node name="@Node3D@28" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1600284086 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, 1, 0, 1, 0, -1.22, 0, -4.371139e-08, 29.65, 0, -6.4)
+
+[node name="@Node3D@29" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=1395242251 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, 1, 0, 1, 0, -1.22, 0, -4.371139e-08, 29.65, 0, 0)
+
+[node name="@Node3D@30" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=855134497 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, 1, 0, 1, 0, -1.22, 0, -4.371139e-08, 29.65, 0, 6.4)
+
+[node name="@Node3D@31" type="Node3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=298855499 instance=ExtResource("21_ikwpp")]
+transform = Transform3D(-5.3327895e-08, 0, 1, 0, 1, 0, -1.22, 0, -4.371139e-08, 29.65, 0, 12.8)
+
+[node name="@CollisionShape3D@32" type="CollisionShape3D" parent="StadiumPerimeter/PerimeterWalls" unique_id=2096370436]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.65, 1.8, 0)
+shape = SubResource("BoxShape3D_38tk7")
+
+[node name="arena_corner_tower" type="Node3D" parent="StadiumPerimeter" unique_id=605091591 instance=ExtResource("22_kjcr2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.65, 0, -18.65)
+
+[node name="@Node3D@33" type="Node3D" parent="StadiumPerimeter" unique_id=658181579 instance=ExtResource("22_kjcr2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.65, 0, 18.65)
+
+[node name="@Node3D@34" type="Node3D" parent="StadiumPerimeter" unique_id=1717088792 instance=ExtResource("22_kjcr2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.65, 0, -18.65)
+
+[node name="@Node3D@35" type="Node3D" parent="StadiumPerimeter" unique_id=1328604957 instance=ExtResource("22_kjcr2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.65, 0, 18.65)
+
+[node name="floodlight_tower" type="Node3D" parent="StadiumPerimeter" unique_id=1370467808 instance=ExtResource("23_5u5ld")]
+transform = Transform3D(0.5434744, 0, 0.8394258, 0, 1, 0, -0.8394258, 0, 0.5434744, -31.2, 0, -20.2)
+
+[node name="@Sprite3D@36" type="Sprite3D" parent="StadiumPerimeter" unique_id=267859507]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.2, 9.8, -20.2)
+modulate = Color(1, 0.9, 0.65, 0.55)
+pixel_size = 0.022
+billboard = 1
+texture = ExtResource("2_6dm5u")
+
+[node name="@Node3D@37" type="Node3D" parent="StadiumPerimeter" unique_id=895367960 instance=ExtResource("23_5u5ld")]
+transform = Transform3D(0.5434744, 0, -0.8394258, 0, 1, 0, 0.8394258, 0, 0.5434744, 31.2, 0, -20.2)
+
+[node name="@Sprite3D@38" type="Sprite3D" parent="StadiumPerimeter" unique_id=1735871026]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.2, 9.8, -20.2)
+modulate = Color(1, 0.9, 0.65, 0.55)
+pixel_size = 0.022
+billboard = 1
+texture = ExtResource("2_6dm5u")
+
+[node name="@Node3D@39" type="Node3D" parent="StadiumPerimeter" unique_id=1559393093 instance=ExtResource("23_5u5ld")]
+transform = Transform3D(-0.5434744, 0, 0.83942574, 0, 1, 0, -0.83942574, 0, -0.5434744, -31.2, 0, 20.2)
+
+[node name="@Sprite3D@40" type="Sprite3D" parent="StadiumPerimeter" unique_id=1671123571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.2, 9.8, 20.2)
+modulate = Color(1, 0.9, 0.65, 0.55)
+pixel_size = 0.022
+billboard = 1
+texture = ExtResource("2_6dm5u")
+
+[node name="@Node3D@41" type="Node3D" parent="StadiumPerimeter" unique_id=198765486 instance=ExtResource("23_5u5ld")]
+transform = Transform3D(-0.5434744, 0, -0.83942574, 0, 1, 0, 0.83942574, 0, -0.5434744, 31.2, 0, 20.2)
+
+[node name="@Sprite3D@42" type="Sprite3D" parent="StadiumPerimeter" unique_id=1721858626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.2, 9.8, 20.2)
+modulate = Color(1, 0.9, 0.65, 0.55)
+pixel_size = 0.022
+billboard = 1
+texture = ExtResource("2_6dm5u")
+
+[node name="spectator_bleacher" type="Node3D" parent="StadiumPerimeter" unique_id=2136573299 instance=ExtResource("24_00ph2")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.5, 0, -22.4)
+
+[node name="@Node3D@43" type="Node3D" parent="StadiumPerimeter" unique_id=2072378809 instance=ExtResource("24_00ph2")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -5.8, 0, -22.4)
+
+[node name="@Node3D@44" type="Node3D" parent="StadiumPerimeter" unique_id=497429751 instance=ExtResource("24_00ph2")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.8, 0, -22.4)
+
+[node name="@Node3D@45" type="Node3D" parent="StadiumPerimeter" unique_id=65438586 instance=ExtResource("24_00ph2")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 17.5, 0, -22.4)
+
+[node name="ParkFoliage" type="Node3D" parent="." unique_id=1079317141]
+
+[node name="stylized_pine" type="Node3D" parent="ParkFoliage" unique_id=27989899 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.7771591, 0, 0.48199102, 0, 0.9603441, 0, -0.48199102, 0, 0.7771591, -56.738136, 0, -29.098133)
+
+[node name="@Node3D@46" type="Node3D" parent="ParkFoliage" unique_id=1812011781 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.85986024, 0, -0.58995163, 0, 1.0506308, 0, 0.58995163, 0, 0.85986024, -59.927265, 0, -36.403645)
+
+[node name="@Node3D@47" type="Node3D" parent="ParkFoliage" unique_id=664959369 instance=ExtResource("25_grxjf")]
+transform = Transform3D(1.0604506, 0, 0.53204983, 0, 1.3934432, 0, -0.53204983, 0, 1.0604506, -52.954155, 0, -27.602726)
+
+[node name="stylized_oak" type="Node3D" parent="ParkFoliage" unique_id=964823 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-1.3686147, 0, -0.02341988, 0, 1.5443769, 0, 0.02341988, 0, -1.3686147, -52.82185, 0, -35.86522)
+
+[node name="@Node3D@48" type="Node3D" parent="ParkFoliage" unique_id=901878534 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.67767835, 0, -0.79736507, 0, 1.1175702, 0, 0.79736507, 0, 0.67767835, -55.109856, 0, -45.66086)
+
+[node name="@Node3D@49" type="Node3D" parent="ParkFoliage" unique_id=1986574355 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.21637012, 0, -0.9849641, 0, 0.9995172, 0, 0.9849641, 0, -0.21637012, -47.66331, 0, -30.85862)
+
+[node name="@Node3D@50" type="Node3D" parent="ParkFoliage" unique_id=260878981 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.23322606, 0, 1.0489902, 0, 1.0137737, 0, -1.0489902, 0, 0.23322606, -47.411514, 0, -36.20284)
+
+[node name="@Node3D@51" type="Node3D" parent="ParkFoliage" unique_id=1325131570 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.91184366, 0, 0.31616744, 0, 0.9871286, 0, -0.31616744, 0, 0.91184366, -49.37119, 0, -45.92837)
+
+[node name="@Node3D@52" type="Node3D" parent="ParkFoliage" unique_id=1128917976 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.7951198, 0, 0.6549237, 0, 1.085891, 0, -0.6549237, 0, 0.7951198, -42.159176, 0, -28.551998)
+
+[node name="@Node3D@53" type="Node3D" parent="ParkFoliage" unique_id=1920049320 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.1375967, 0, -0.8103798, 0, 1.3787785, 0, 0.8103798, 0, 1.1375967, -41.89846, 0, -46.816048)
+
+[node name="@Node3D@54" type="Node3D" parent="ParkFoliage" unique_id=788719178 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.3376496, 0, -0.98241615, 0, 0.9864139, 0, 0.98241615, 0, 0.3376496, -36.776875, 0, -26.93784)
+
+[node name="@Node3D@55" type="Node3D" parent="ParkFoliage" unique_id=799361495 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.5127798, 0, 0.7978386, 0, 1.0840912, 0, -0.7978386, 0, -0.5127798, -33.04481, 0, -27.86544)
+
+[node name="@Node3D@56" type="Node3D" parent="ParkFoliage" unique_id=1011917179 instance=ExtResource("25_grxjf")]
+transform = Transform3D(1.3658662, 0, -0.18861838, 0, 1.6075898, 0, 0.18861838, 0, 1.3658662, -33.7456, 0, -37.15974)
+
+[node name="@Node3D@57" type="Node3D" parent="ParkFoliage" unique_id=256595411 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.24229576, 0, -1.0623207, 0, 1.1111848, 0, 1.0623207, 0, 0.24229576, -27.690975, 0, -28.126904)
+
+[node name="@Node3D@58" type="Node3D" parent="ParkFoliage" unique_id=188511410 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.5297935, 0, 0.7764343, 0, 1.0581375, 0, -0.7764343, 0, 0.5297935, -29.943184, 0, -34.124813)
+
+[node name="@Node3D@59" type="Node3D" parent="ParkFoliage" unique_id=604954160 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.5000815, 0, -1.08459, 0, 1.1841806, 0, 1.08459, 0, 0.5000815, -22.833315, 0, -28.489414)
+
+[node name="@Node3D@60" type="Node3D" parent="ParkFoliage" unique_id=856940185 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.86949, 0, -0.85145426, 0, 1.4308531, 0, 0.85145426, 0, -0.86949, -21.151653, 0, -37.122437)
+
+[node name="@Node3D@61" type="Node3D" parent="ParkFoliage" unique_id=1403390447 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-1.3058535, 0, 0.07817021, 0, 1.3147035, 0, -0.07817021, 0, -1.3058535, -22.214193, 0, -45.674973)
+
+[node name="@Node3D@62" type="Node3D" parent="ParkFoliage" unique_id=1069794839 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.84841204, 0, -0.34930322, 0, 0.9853053, 0, 0.34930322, 0, 0.84841204, -18.513594, 0, -29.640491)
+
+[node name="@Node3D@63" type="Node3D" parent="ParkFoliage" unique_id=1180692535 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-1.1065353, 0, -0.686371, 0, 1.3629091, 0, 0.686371, 0, -1.1065353, -16.780172, 0, -33.639748)
+
+[node name="@Node3D@64" type="Node3D" parent="ParkFoliage" unique_id=265644633 instance=ExtResource("25_grxjf")]
+transform = Transform3D(1.2270172, 0, 0.48103508, 0, 1.4449078, 0, -0.48103508, 0, 1.2270172, -19.242899, 0, -45.47481)
+
+[node name="@Node3D@65" type="Node3D" parent="ParkFoliage" unique_id=1342125591 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.80786717, 0, -0.98873734, 0, 1.20435, 0, 0.98873734, 0, 0.80786717, -13.224764, 0, -26.923574)
+
+[node name="@Node3D@66" type="Node3D" parent="ParkFoliage" unique_id=926749222 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.8401582, 0, -0.760202, 0, 1.276374, 0, 0.760202, 0, -0.8401582, -11.603412, 0, -41.964737)
+
+[node name="@Node3D@67" type="Node3D" parent="ParkFoliage" unique_id=396907647 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.6831085, 0, 1.2255696, 0, 1.3136996, 0, -1.2255696, 0, -0.6831085, -7.2918763, 0, -27.73608)
+
+[node name="@Node3D@68" type="Node3D" parent="ParkFoliage" unique_id=2040186615 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.6181426, 0, -0.6501125, 0, 0.9931441, 0, 0.6501125, 0, 0.6181426, -8.397287, 0, -34.307728)
+
+[node name="@Node3D@69" type="Node3D" parent="ParkFoliage" unique_id=759102510 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.6900562, 0, 0.7212009, 0, 1.007184, 0, -0.7212009, 0, -0.6900562, -7.529833, 0, -45.048637)
+
+[node name="@Node3D@70" type="Node3D" parent="ParkFoliage" unique_id=144479142 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.58846825, 0, 0.9823639, 0, 1.3000879, 0, -0.9823639, 0, -0.58846825, -2.9500005, 0, -27.227503)
+
+[node name="@Node3D@71" type="Node3D" parent="ParkFoliage" unique_id=1135644336 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.0893769, 0, 0.8098309, 0, 1.4394965, 0, -0.8098309, 0, -1.0893769, -3.7202015, 0, -35.26713)
+
+[node name="@Node3D@72" type="Node3D" parent="ParkFoliage" unique_id=1321066095 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.9419422, 0, -1.0274752, 0, 1.4958816, 0, 1.0274752, 0, -0.9419422, 0.97939813, 0, -28.67951)
+
+[node name="@Node3D@73" type="Node3D" parent="ParkFoliage" unique_id=1260308980 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.3467572, 0, -0.99344635, 0, 1.0023583, 0, 0.99344635, 0, -0.3467572, 3.4488413, 0, -46.716743)
+
+[node name="@Node3D@74" type="Node3D" parent="ParkFoliage" unique_id=1789063409 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.9186553, 0, -0.5604612, 0, 1.0738747, 0, 0.5604612, 0, -0.9186553, 7.55082, 0, -30.480333)
+
+[node name="@Node3D@75" type="Node3D" parent="ParkFoliage" unique_id=191345637 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.5444057, 0, -0.9332805, 0, 1.1177212, 0, 0.9332805, 0, 0.5444057, 7.3355727, 0, -36.710293)
+
+[node name="@Node3D@76" type="Node3D" parent="ParkFoliage" unique_id=1486469649 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.5133147, 0, -1.0022148, 0, 1.0521958, 0, 1.0022148, 0, -0.5133147, 13.598195, 0, -27.110155)
+
+[node name="@Node3D@77" type="Node3D" parent="ParkFoliage" unique_id=1855532502 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.2490494, 0, -1.0657429, 0, 1.129714, 0, 1.0657429, 0, -0.2490494, 13.16401, 0, -36.9693)
+
+[node name="@Node3D@78" type="Node3D" parent="ParkFoliage" unique_id=45895898 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.8015265, 0, 1.0840203, 0, 1.3267201, 0, -1.0840203, 0, -0.8015265, 12.273372, 0, -45.30085)
+
+[node name="@Node3D@79" type="Node3D" parent="ParkFoliage" unique_id=325349996 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.0175637, 0, 0.33135757, 0, 1.0728167, 0, -0.33135757, 0, -1.0175637, 18.217037, 0, -28.59219)
+
+[node name="@Node3D@80" type="Node3D" parent="ParkFoliage" unique_id=302626323 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.92637, 0, -0.023477387, 0, 0.92489535, 0, 0.023477387, 0, 0.92637, 18.677603, 0, -35.746014)
+
+[node name="@Node3D@81" type="Node3D" parent="ParkFoliage" unique_id=1606818671 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.56891084, 0, -1.0268283, 0, 1.1164817, 0, 1.0268283, 0, 0.56891084, 16.954966, 0, -43.03989)
+
+[node name="@Node3D@82" type="Node3D" parent="ParkFoliage" unique_id=1459505756 instance=ExtResource("25_grxjf")]
+transform = Transform3D(1.1485274, 0, -0.70919645, 0, 1.4834096, 0, 0.70919645, 0, 1.1485274, 22.963194, 0, -30.483631)
+
+[node name="@Node3D@83" type="Node3D" parent="ParkFoliage" unique_id=19262809 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.42741758, 0, 1.3326533, 0, 1.3891301, 0, -1.3326533, 0, 0.42741758, 20.283678, 0, -33.467316)
+
+[node name="@Node3D@84" type="Node3D" parent="ParkFoliage" unique_id=1545784851 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.1823875, 0, 0.30503732, 0, 1.2225872, 0, -0.30503732, 0, -1.1823875, 23.462662, 0, -43.69028)
+
+[node name="@Node3D@85" type="Node3D" parent="ParkFoliage" unique_id=1828465110 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.1405368, 0, 0.9817296, 0, 0.93752617, 0, -0.9817296, 0, 0.1405368, 26.060791, 0, -28.430925)
+
+[node name="@Node3D@86" type="Node3D" parent="ParkFoliage" unique_id=1367244134 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.30476567, 0, 0.9772754, 0, 0.9861875, 0, -0.9772754, 0, -0.30476567, 31.64995, 0, -28.770172)
+
+[node name="@Node3D@87" type="Node3D" parent="ParkFoliage" unique_id=1739953926 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.0840855, 0, 0.5624529, 0, 1.3437557, 0, -0.5624529, 0, 1.0840855, 32.65819, 0, -35.904175)
+
+[node name="@Node3D@88" type="Node3D" parent="ParkFoliage" unique_id=1918713009 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-1.0481747, 0, 0.19881713, 0, 1.1656914, 0, -0.19881713, 0, -1.0481747, 33.916283, 0, -43.964287)
+
+[node name="@Node3D@89" type="Node3D" parent="ParkFoliage" unique_id=1389733482 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.7228873, 0, -1.2037071, 0, 1.3667262, 0, 1.2037071, 0, 0.7228873, 36.4978, 0, -29.826576)
+
+[node name="@Node3D@90" type="Node3D" parent="ParkFoliage" unique_id=2069452289 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.0376883, 0, 0.2269569, 0, 1.1232008, 0, -0.2269569, 0, 1.0376883, 38.01393, 0, -35.064148)
+
+[node name="@Node3D@91" type="Node3D" parent="ParkFoliage" unique_id=825013629 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.4949864, 0, -0.85768837, 0, 1.1245712, 0, 0.85768837, 0, 0.4949864, 41.63376, 0, -29.872604)
+
+[node name="@Node3D@92" type="Node3D" parent="ParkFoliage" unique_id=1588278228 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.35008395, 0, -1.1635836, 0, 1.2843372, 0, 1.1635836, 0, -0.35008395, 42.952404, 0, -36.438667)
+
+[node name="@Node3D@93" type="Node3D" parent="ParkFoliage" unique_id=411798912 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.5865831, 0, 0.7413856, 0, 1.0871575, 0, -0.7413856, 0, 0.5865831, 47.414318, 0, -30.18781)
+
+[node name="@Node3D@94" type="Node3D" parent="ParkFoliage" unique_id=76184176 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.6278054, 0, -1.0434338, 0, 1.3503618, 0, 1.0434338, 0, -0.6278054, 46.448685, 0, -36.272717)
+
+[node name="@Node3D@95" type="Node3D" parent="ParkFoliage" unique_id=765183538 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.96311986, 0, 0.24484152, 0, 1.1265073, 0, -0.24484152, 0, -0.96311986, 49.168747, 0, -46.122585)
+
+[node name="@Node3D@96" type="Node3D" parent="ParkFoliage" unique_id=2091835886 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.52716774, 0, -0.7631273, 0, 1.0193645, 0, 0.7631273, 0, 0.52716774, 53.15937, 0, -29.87927)
+
+[node name="@Node3D@97" type="Node3D" parent="ParkFoliage" unique_id=701262914 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.07524142, 0, -0.99507195, 0, 1.0070409, 0, 0.99507195, 0, -0.07524142, 53.721004, 0, -37.483913)
+
+[node name="@Node3D@98" type="Node3D" parent="ParkFoliage" unique_id=1520106357 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.97053593, 0, 0.024905434, 0, 0.9400597, 0, -0.024905434, 0, -0.97053593, 50.786026, 0, -42.534935)
+
+[node name="@Node3D@99" type="Node3D" parent="ParkFoliage" unique_id=427504288 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.4705005, 0, 0.9618824, 0, 1.1162672, 0, -0.9618824, 0, -0.4705005, 57.165783, 0, -28.767662)
+
+[node name="@Node3D@100" type="Node3D" parent="ParkFoliage" unique_id=823276732 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.77396166, 0, -0.46697462, 0, 0.94938576, 0, 0.46697462, 0, -0.77396166, 56.81183, 0, -36.38015)
+
+[node name="@Node3D@101" type="Node3D" parent="ParkFoliage" unique_id=288396656 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.1903576, 0, -1.3913479, 0, 1.3059571, 0, 1.3913479, 0, -0.1903576, -38.028797, 0, -32.19143)
+
+[node name="@Node3D@102" type="Node3D" parent="ParkFoliage" unique_id=341323727 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.0938628, 0, -0.65596265, 0, 1.245042, 0, 0.65596265, 0, -1.0938628, -44.126366, 0, -30.58823)
+
+[node name="@Node3D@103" type="Node3D" parent="ParkFoliage" unique_id=454709715 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.7263415, 0, -1.0102578, 0, 1.2325647, 0, 1.0102578, 0, 0.7263415, -39.86925, 0, -27.319141)
+
+[node name="@Node3D@104" type="Node3D" parent="ParkFoliage" unique_id=1745184773 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.049725216, 0, 1.0638407, 0, 1.1058015, 0, -1.0638407, 0, 0.049725216, -39.394524, 0, -23.114315)
+
+[node name="@Node3D@105" type="Node3D" parent="ParkFoliage" unique_id=1768318358 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.3935234, 0, -1.010212, 0, 1.2115926, 0, 1.010212, 0, 0.3935234, -47.713196, 0, -21.915478)
+
+[node name="@Node3D@106" type="Node3D" parent="ParkFoliage" unique_id=395426449 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.884951, 0, 0.41229916, 0, 0.945386, 0, -0.41229916, 0, -0.884951, -36.54874, 0, -18.455744)
+
+[node name="@Node3D@107" type="Node3D" parent="ParkFoliage" unique_id=952877481 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.08017098, 0, 1.0436494, 0, 0.991215, 0, -1.0436494, 0, -0.08017098, -44.53315, 0, -16.074984)
+
+[node name="@Node3D@108" type="Node3D" parent="ParkFoliage" unique_id=198585647 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.91273504, 0, 0.28426868, 0, 1.096459, 0, -0.28426868, 0, -0.91273504, -36.614265, 0, -12.038077)
+
+[node name="@Node3D@109" type="Node3D" parent="ParkFoliage" unique_id=1142869702 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.2438912, 0, 0.25019014, 0, 1.262866, 0, -0.25019014, 0, -1.2438912, -46.594376, 0, -10.184659)
+
+[node name="@Node3D@110" type="Node3D" parent="ParkFoliage" unique_id=1353849945 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.84405607, 0, -0.33315134, 0, 0.85668904, 0, 0.33315134, 0, 0.84405607, -38.036823, 0, -8.278841)
+
+[node name="@Node3D@111" type="Node3D" parent="ParkFoliage" unique_id=1381986176 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.0582166, 0, -0.1299443, 0, 1.0713795, 0, 0.1299443, 0, -1.0582166, -37.265854, 0, -1.7207866)
+
+[node name="@Node3D@112" type="Node3D" parent="ParkFoliage" unique_id=1866865703 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.25960308, 0, 1.2026275, 0, 1.2870992, 0, -1.2026275, 0, -0.25960308, -44.722847, 0, -0.9435196)
+
+[node name="@Node3D@113" type="Node3D" parent="ParkFoliage" unique_id=1096127864 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.57766366, 0, 0.928077, 0, 1.2838924, 0, -0.928077, 0, 0.57766366, -38.924072, 0, 1.777178)
+
+[node name="@Node3D@114" type="Node3D" parent="ParkFoliage" unique_id=537938496 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.61693555, 0, 0.8546046, 0, 1.2262281, 0, -0.8546046, 0, 0.61693555, -45.83421, 0, 4.519841)
+
+[node name="@Node3D@115" type="Node3D" parent="ParkFoliage" unique_id=1395772846 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.02084438, 0, -1.0640817, 0, 1.1298023, 0, 1.0640817, 0, 0.02084438, -39.06043, 0, 8.663149)
+
+[node name="@Node3D@116" type="Node3D" parent="ParkFoliage" unique_id=1802156875 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.1472993, 0, -0.5157675, 0, 1.4788406, 0, 0.5157675, 0, -1.1472993, -35.55383, 0, 12.107424)
+
+[node name="@Node3D@117" type="Node3D" parent="ParkFoliage" unique_id=500429778 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.233808, 0, 1.2145247, 0, 1.2188879, 0, -1.2145247, 0, 0.233808, -43.45555, 0, 13.80487)
+
+[node name="@Node3D@118" type="Node3D" parent="ParkFoliage" unique_id=536511179 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-1.0370878, 0, -0.5187709, 0, 1.2291734, 0, 0.5187709, 0, -1.0370878, -37.515396, 0, 17.924757)
+
+[node name="@Node3D@119" type="Node3D" parent="ParkFoliage" unique_id=1427617626 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.82306737, 0, -0.78762764, 0, 1.0823152, 0, 0.78762764, 0, 0.82306737, -49.231884, 0, 16.635393)
+
+[node name="@Node3D@120" type="Node3D" parent="ParkFoliage" unique_id=833527229 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.53699017, 0, -1.1955425, 0, 1.359753, 0, 1.1955425, 0, 0.53699017, -39.90541, 0, 23.809698)
+
+[node name="@Node3D@121" type="Node3D" parent="ParkFoliage" unique_id=2006699712 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.0677507, 0, 0.27819437, 0, 1.0683115, 0, -0.27819437, 0, 1.0677507, -49.43757, 0, 23.586887)
+
+[node name="@Node3D@122" type="Node3D" parent="ParkFoliage" unique_id=88791271 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.93923205, 0, -0.86986506, 0, 1.2961868, 0, 0.86986506, 0, -0.93923205, -37.75708, 0, 27.257738)
+
+[node name="@Node3D@123" type="Node3D" parent="ParkFoliage" unique_id=1467074533 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.1653293, 0, -0.4798427, 0, 1.2806773, 0, 0.4798427, 0, -1.1653293, -43.21891, 0, 26.95733)
+
+[node name="@Node3D@124" type="Node3D" parent="ParkFoliage" unique_id=725014421 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.8284581, 0, 0.37426537, 0, 0.89516145, 0, -0.37426537, 0, -0.8284581, -36.091515, 0, 33.443222)
+
+[node name="@Node3D@125" type="Node3D" parent="ParkFoliage" unique_id=1504937219 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.17544016, 0, -1.2136906, 0, 1.255696, 0, 1.2136906, 0, 0.17544016, -48.646053, 0, 31.717405)
+
+[node name="@Node3D@126" type="Node3D" parent="ParkFoliage" unique_id=1187343071 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.89604044, 0, -0.50727403, 0, 1.202603, 0, 0.50727403, 0, -0.89604044, 40.528503, 0, -32.262207)
+
+[node name="@Node3D@127" type="Node3D" parent="ParkFoliage" unique_id=693944448 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.04549579, 0, -1.1672952, 0, 1.274724, 0, 1.1672952, 0, -0.04549579, 43.94605, 0, -32.33627)
+
+[node name="@Node3D@128" type="Node3D" parent="ParkFoliage" unique_id=1501436459 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.7867417, 0, 0.8681736, 0, 1.3394967, 0, -0.8681736, 0, -0.7867417, 40.76048, 0, -28.12465)
+
+[node name="@Node3D@129" type="Node3D" parent="ParkFoliage" unique_id=1143220662 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.0938437, 0, 0.4692145, 0, 1.2411995, 0, -0.4692145, 0, -1.0938437, 47.03952, 0, -28.214996)
+
+[node name="@Node3D@130" type="Node3D" parent="ParkFoliage" unique_id=75023789 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.5080965, 0, 0.96493685, 0, 1.013563, 0, -0.96493685, 0, -0.5080965, 39.154007, 0, -20.984394)
+
+[node name="@Node3D@131" type="Node3D" parent="ParkFoliage" unique_id=1304289589 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.88981414, 0, -0.33580464, 0, 1.1025847, 0, 0.33580464, 0, 0.88981414, 47.78209, 0, -22.877337)
+
+[node name="@Node3D@132" type="Node3D" parent="ParkFoliage" unique_id=716712504 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.2671199, 0, 0.33103788, 0, 1.3268697, 0, -0.33103788, 0, 1.2671199, 36.755028, 0, -17.570923)
+
+[node name="@Node3D@133" type="Node3D" parent="ParkFoliage" unique_id=1434202870 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.057431977, 0, -1.281316, 0, 1.2001677, 0, 1.281316, 0, 0.057431977, 46.197147, 0, -17.785229)
+
+[node name="@Node3D@134" type="Node3D" parent="ParkFoliage" unique_id=454048240 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.0067987, 0, 0.95472544, 0, 1.42922, 0, -0.95472544, 0, 1.0067987, 39.023426, 0, -13.224019)
+
+[node name="@Node3D@135" type="Node3D" parent="ParkFoliage" unique_id=679064773 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.97731066, 0, -0.6722293, 0, 1.3035486, 0, 0.6722293, 0, -0.97731066, 48.384346, 0, -12.354753)
+
+[node name="@Node3D@136" type="Node3D" parent="ParkFoliage" unique_id=825094147 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.62733555, 0, -1.0102749, 0, 1.1986257, 0, 1.0102749, 0, 0.62733555, 39.262512, 0, -6.797887)
+
+[node name="@Node3D@137" type="Node3D" parent="ParkFoliage" unique_id=1722199512 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.44791973, 0, 1.0316248, 0, 1.1347041, 0, -1.0316248, 0, 0.44791973, 44.39369, 0, -7.7036533)
+
+[node name="@Node3D@138" type="Node3D" parent="ParkFoliage" unique_id=1218056026 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.93579465, 0, -0.6317146, 0, 1.2330095, 0, 0.6317146, 0, -0.93579465, 36.050026, 0, -0.2787447)
+
+[node name="@Node3D@139" type="Node3D" parent="ParkFoliage" unique_id=329840999 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.47735447, 0, 1.219868, 0, 1.490388, 0, -1.219868, 0, -0.47735447, 45.540764, 0, -1.9591641)
+
+[node name="@Node3D@140" type="Node3D" parent="ParkFoliage" unique_id=1438113854 instance=ExtResource("25_grxjf")]
+transform = Transform3D(1.131031, 0, 0.66824836, 0, 1.3571154, 0, -0.66824836, 0, 1.131031, 37.70628, 0, 2.9272597)
+
+[node name="@Node3D@141" type="Node3D" parent="ParkFoliage" unique_id=775158138 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.1518755, 0, -0.72246474, 0, 1.5311842, 0, 0.72246474, 0, -1.1518755, 37.834576, 0, 7.011752)
+
+[node name="@Node3D@142" type="Node3D" parent="ParkFoliage" unique_id=527608226 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.031228429, 0, -0.91356635, 0, 0.8430667, 0, 0.91356635, 0, 0.031228429, 44.83874, 0, 9.674285)
+
+[node name="@Node3D@143" type="Node3D" parent="ParkFoliage" unique_id=247831395 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.9287491, 0, 0.52525, 0, 1.0538882, 0, -0.52525, 0, -0.9287491, 37.733223, 0, 13.672591)
+
+[node name="@Node3D@144" type="Node3D" parent="ParkFoliage" unique_id=678085369 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.96624684, 0, 0.81324506, 0, 1.2781173, 0, -0.81324506, 0, 0.96624684, 43.528603, 0, 11.101313)
+
+[node name="@Node3D@145" type="Node3D" parent="ParkFoliage" unique_id=1718222109 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.062144317, 0, -1.4065698, 0, 1.4918718, 0, 1.4065698, 0, 0.062144317, 37.676632, 0, 18.622105)
+
+[node name="@Node3D@146" type="Node3D" parent="ParkFoliage" unique_id=1887170207 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.174999, 0, -0.30976668, 0, 1.3637978, 0, 0.30976668, 0, 1.174999, 46.521862, 0, 19.708315)
+
+[node name="@Node3D@147" type="Node3D" parent="ParkFoliage" unique_id=1090808500 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.12520753, 0, 1.106987, 0, 1.1220633, 0, -1.106987, 0, 0.12520753, 38.622784, 0, 24.138893)
+
+[node name="@Node3D@148" type="Node3D" parent="ParkFoliage" unique_id=509593850 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.5776705, 0, 1.2605957, 0, 1.5963333, 0, -1.2605957, 0, 0.5776705, 40.264038, 0, 26.73063)
+
+[node name="@Node3D@149" type="Node3D" parent="ParkFoliage" unique_id=892877134 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.05119063, 0, 1.133764, 0, 1.2421827, 0, -1.133764, 0, -0.05119063, 44.087784, 0, 29.232355)
+
+[node name="@Node3D@150" type="Node3D" parent="ParkFoliage" unique_id=1702327836 instance=ExtResource("25_grxjf")]
+transform = Transform3D(1.3499858, 0, -0.06872372, 0, 1.4362445, 0, 0.06872372, 0, 1.3499858, 40.77618, 0, 34.324158)
+
+[node name="@Node3D@151" type="Node3D" parent="ParkFoliage" unique_id=1522834258 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-1.1485093, 0, -0.69245845, 0, 1.4576931, 0, 0.69245845, 0, -1.1485093, -48.549072, 0, 37.160206)
+
+[node name="@Node3D@152" type="Node3D" parent="ParkFoliage" unique_id=2113443544 instance=ExtResource("25_grxjf")]
+transform = Transform3D(0.5873917, 0, 1.095257, 0, 1.329405, 0, -1.095257, 0, 0.5873917, -37.283123, 0, 34.015415)
+
+[node name="@Node3D@153" type="Node3D" parent="ParkFoliage" unique_id=1281045682 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(1.083763, 0, 0.43223953, 0, 1.3354936, 0, -0.43223953, 0, 1.083763, -29.520315, 0, 37.276672)
+
+[node name="@Node3D@154" type="Node3D" parent="ParkFoliage" unique_id=556197460 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.2972726, 0, -1.1048435, 0, 1.3441744, 0, 1.1048435, 0, 0.2972726, -19.305437, 0, 34.25181)
+
+[node name="@Node3D@155" type="Node3D" parent="ParkFoliage" unique_id=1997603865 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(0.18655798, 0, -1.2865348, 0, 1.4215244, 0, 1.2865348, 0, 0.18655798, -11.579839, 0, 36.668854)
+
+[node name="@Node3D@156" type="Node3D" parent="ParkFoliage" unique_id=1379076684 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.9639451, 0, 0.90954715, 0, 1.3213826, 0, -0.90954715, 0, -0.9639451, -4.330642, 0, 34.19988)
+
+[node name="@Node3D@157" type="Node3D" parent="ParkFoliage" unique_id=1867748256 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.7146575, 0, -0.91664445, 0, 1.0852877, 0, 0.91664445, 0, -0.7146575, 6.082851, 0, 33.880444)
+
+[node name="@Node3D@158" type="Node3D" parent="ParkFoliage" unique_id=279732311 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.12559731, 0, 1.2694461, 0, 1.3225662, 0, -1.2694461, 0, -0.12559731, 13.823378, 0, 36.107964)
+
+[node name="@Node3D@159" type="Node3D" parent="ParkFoliage" unique_id=1487405128 instance=ExtResource("26_6d1h2")]
+transform = Transform3D(-0.9144227, 0, -0.27124205, 0, 0.95012516, 0, 0.27124205, 0, -0.9144227, 22.866901, 0, 34.378487)
+
+[node name="@Node3D@160" type="Node3D" parent="ParkFoliage" unique_id=669515533 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.3979309, 0, 0.8189183, 0, 0.9253918, 0, -0.8189183, 0, -0.3979309, 33.53567, 0, 36.65226)
+
+[node name="@Node3D@161" type="Node3D" parent="ParkFoliage" unique_id=972112711 instance=ExtResource("25_grxjf")]
+transform = Transform3D(-0.9700663, 0, -0.036001742, 0, 0.9802195, 0, 0.036001742, 0, -0.9700663, 41.48026, 0, 33.620216)
+
+[node name="stylized_bush" type="Node3D" parent="ParkFoliage" unique_id=1632421947 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.18468529, 0, 1.0216722, 0, 1.0382307, 0, -1.0216722, 0, -0.18468529, -32.389442, 0, -24.21319)
+
+[node name="@Node3D@162" type="Node3D" parent="ParkFoliage" unique_id=35204151 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.49935403, 0, -0.7190818, 0, 0.87546164, 0, 0.7190818, 0, -0.49935403, -32.44347, 0, 23.813992)
+
+[node name="@Node3D@163" type="Node3D" parent="ParkFoliage" unique_id=788680243 instance=ExtResource("27_ur278")]
+transform = Transform3D(0.15374509, 0, -0.8955253, 0, 0.90862703, 0, 0.8955253, 0, 0.15374509, -28.113453, 0, -24.280146)
+
+[node name="@Node3D@164" type="Node3D" parent="ParkFoliage" unique_id=515101393 instance=ExtResource("27_ur278")]
+transform = Transform3D(1.0873474, 0, 0.32470113, 0, 1.134793, 0, -0.32470113, 0, 1.0873474, -27.223778, 0, 23.575634)
+
+[node name="@Node3D@165" type="Node3D" parent="ParkFoliage" unique_id=1917313913 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.22720566, 0, 0.97035813, 0, 0.9966029, 0, -0.97035813, 0, -0.22720566, -21.884254, 0, -23.567083)
+
+[node name="@Node3D@166" type="Node3D" parent="ParkFoliage" unique_id=500786020 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.32832024, 0, -0.8062975, 0, 0.87058014, 0, 0.8062975, 0, -0.32832024, -21.052961, 0, 23.987736)
+
+[node name="@Node3D@167" type="Node3D" parent="ParkFoliage" unique_id=907757178 instance=ExtResource("27_ur278")]
+transform = Transform3D(1.0441431, 0, 0.12527244, 0, 1.0516311, 0, -0.12527244, 0, 1.0441431, -16.593895, 0, 24.003864)
+
+[node name="@Node3D@168" type="Node3D" parent="ParkFoliage" unique_id=1860912892 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.5675263, 0, 0.6805173, 0, 0.8861094, 0, -0.6805173, 0, -0.5675263, -11.378629, 0, 23.099092)
+
+[node name="@Node3D@169" type="Node3D" parent="ParkFoliage" unique_id=1003196112 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.119636156, 0, -1.1770804, 0, 1.1831446, 0, 1.1770804, 0, -0.119636156, -6.676674, 0, 24.330702)
+
+[node name="@Node3D@170" type="Node3D" parent="ParkFoliage" unique_id=876568705 instance=ExtResource("27_ur278")]
+transform = Transform3D(1.202782, 0, 0.1568809, 0, 1.21297, 0, -0.1568809, 0, 1.202782, -2.0657725, 0, 23.348034)
+
+[node name="@Node3D@171" type="Node3D" parent="ParkFoliage" unique_id=561235605 instance=ExtResource("27_ur278")]
+transform = Transform3D(0.6889018, 0, 0.7736506, 0, 1.0359155, 0, -0.7736506, 0, 0.6889018, 2.445644, 0, 23.606089)
+
+[node name="@Node3D@172" type="Node3D" parent="ParkFoliage" unique_id=2106384328 instance=ExtResource("27_ur278")]
+transform = Transform3D(-1.1896303, 0, -0.0010920797, 0, 1.1896307, 0, 0.0010920797, 0, -1.1896303, 7.425293, 0, 24.163177)
+
+[node name="@Node3D@173" type="Node3D" parent="ParkFoliage" unique_id=1947611608 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.9272371, 0, 0.6584376, 0, 1.1372373, 0, -0.6584376, 0, -0.9272371, 14.16178, 0, 24.003817)
+
+[node name="@Node3D@174" type="Node3D" parent="ParkFoliage" unique_id=1620198188 instance=ExtResource("27_ur278")]
+transform = Transform3D(0.27353254, 0, 0.94992936, 0, 0.98852706, 0, -0.94992936, 0, 0.27353254, 17.625357, 0, 22.804005)
+
+[node name="@Node3D@175" type="Node3D" parent="ParkFoliage" unique_id=1579937828 instance=ExtResource("27_ur278")]
+transform = Transform3D(0.96029097, 0, 0.61178154, 0, 1.1386112, 0, -0.61178154, 0, 0.96029097, 23.47385, 0, -24.47404)
+
+[node name="@Node3D@176" type="Node3D" parent="ParkFoliage" unique_id=650485859 instance=ExtResource("27_ur278")]
+transform = Transform3D(-1.017375, 0, 0.56821024, 0, 1.165296, 0, -0.56821024, 0, -1.017375, 21.913673, 0, 23.32697)
+
+[node name="@Node3D@177" type="Node3D" parent="ParkFoliage" unique_id=134305047 instance=ExtResource("27_ur278")]
+transform = Transform3D(0.7797575, 0, 0.41461563, 0, 0.88313526, 0, -0.41461563, 0, 0.7797575, 28.682081, 0, -23.035286)
+
+[node name="@Node3D@178" type="Node3D" parent="ParkFoliage" unique_id=2027874813 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.9057836, 0, 0.50295943, 0, 1.036056, 0, -0.50295943, 0, -0.9057836, 26.950985, 0, 23.161854)
+
+[node name="@Node3D@179" type="Node3D" parent="ParkFoliage" unique_id=1182209495 instance=ExtResource("27_ur278")]
+transform = Transform3D(-0.74496555, 0, 0.6881007, 0, 1.0141283, 0, -0.6881007, 0, -0.74496555, 32.919456, 0, -24.101648)
+
+[node name="@Node3D@180" type="Node3D" parent="ParkFoliage" unique_id=817695015 instance=ExtResource("27_ur278")]
+transform = Transform3D(0.4548472, 0, -1.1129667, 0, 1.2023231, 0, 1.1129667, 0, 0.4548472, 32.351048, 0, 23.388704)
+
+[node name="EditorPreview" type="Node3D" parent="." unique_id=1596722388]
+
+[node name="BlueFlagPreview" type="Node3D" parent="EditorPreview" unique_id=1873364129 instance=ExtResource("28_q00cy")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -23, 0.56, 0)
+
+[node name="RedFlagPreview" type="Node3D" parent="EditorPreview" unique_id=1167445844 instance=ExtResource("29_rvjci")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 23, 0.56, 0)
+
+[node name="CobaltPlayerPreview" type="Node3D" parent="EditorPreview" unique_id=1239877394 instance=ExtResource("30_7evfb")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -16, 0, 2.2)
+
+[node name="EmberPlayerPreview" type="Node3D" parent="EditorPreview" unique_id=1614219554 instance=ExtResource("31_805c5")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 16, 0, -2.2)

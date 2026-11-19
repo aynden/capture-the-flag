@@ -1,0 +1,18 @@
+# Godot 4 local import cache
+.godot/
+
+# macOS & OS files
+.DS_Store
+._*
+
+# Local desktop build artifacts
+*.dmg
+*.app/
+*.zip
+*.pck
+!web/index.pck
+
+# Blender autosave backups
+*.blend1
+*.blend2
+__pycache__/

@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_sugp2"]
+[ext_resource type="PackedScene" path="res://scenes/arena.tscn" id="2_jyhfs"]
+[ext_resource type="Script" path="res://scripts/arena_builder.gd" id="3_tbgi4"]
+
+[node name="Main" type="Node3D" unique_id=316487494]
+script = ExtResource("1_sugp2")
+
+[node name="Arena" type="Node3D" parent="." unique_id=970469088 instance=ExtResource("2_jyhfs")]
+script = ExtResource("3_tbgi4")
