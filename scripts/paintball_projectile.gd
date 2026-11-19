@@ -52,10 +52,11 @@ func _ready() -> void:
 	add_child(trail)
 
 
-func setup(p_team: int, p_shooter: Node3D, start_pos: Vector3, dir: Vector3, speed: float, p_color: Color, p_splat: SplatterManager, p_audio: AudioManager) -> void:
+func setup(p_team: int, p_shooter: Node3D, start_pos: Vector3, dir: Vector3, speed: float, p_color: Color, p_splat: SplatterManager, p_audio: AudioManager, p_damage: float = 20.0) -> void:
 	team = p_team
 	shooter = p_shooter
 	paint_color = p_color
+	damage = p_damage
 	splatter_manager = p_splat
 	audio_manager = p_audio
 	global_position = start_pos

@@ -17,6 +17,10 @@ var _last_pos: Vector3 = Vector3.ZERO
 var _unstick_dir: Vector3 = Vector3.ZERO
 var _unstick_timer: float = 0.0
 var _current_target_pos: Vector3 = Vector3.ZERO
+var _burst_firing: bool = true
+var _burst_timer: float = 1.0
+var _spot_delay: float = 0.0
+var _last_target: CharacterController = null
 
 
 func setup(p_char: CharacterController, p_gm: Node, p_role: int) -> void:
@@ -79,23 +83,36 @@ func _physics_process(delta: float) -> void:
 
 	character.move_input = desired_dir
 
-	# Aiming & Shooting with slight velocity lead!
+	# Natural paintball burst-fire rhythm (fire ~1s bursts, then pause ~1.1s while moving)
+	_burst_timer -= delta
+	if _burst_timer <= 0.0:
+		_burst_firing = not _burst_firing
+		_burst_timer = randf_range(0.85, 1.35) if _burst_firing else randf_range(0.85, 1.45)
+
+	# Aiming & Shooting with human-like reaction time & forgiving burst fire!
 	if combat_target != null:
+		if combat_target != _last_target:
+			_last_target = combat_target
+			_spot_delay = 0.32
+		if _spot_delay > 0.0:
+			_spot_delay -= delta
+
 		var dist := character.global_position.distance_to(combat_target.global_position)
-		var flight_t := dist / CharacterController.PAINTBALL_SPEED
-		var lead_pos := combat_target.global_position + combat_target.velocity * (flight_t * 0.65)
+		var flight_t := dist / CharacterController.AI_PAINTBALL_SPEED
+		var lead_pos := combat_target.global_position + combat_target.velocity * (flight_t * 0.35)
 		character.aim_point = Vector3(lead_pos.x, 1.15, lead_pos.z)
-		character.wants_fire = dist < 21.5 and _has_clear_shot(combat_target)
+		character.wants_fire = _burst_firing and _spot_delay <= 0.0 and dist < 17.5 and _has_clear_shot(combat_target)
 		# Dash evasively if hurt or carrying flag under fire!
-		if character.dash_cooldown_timer <= 0.0 and ((character.hp < 50.0 and randf() < 0.04) or (character.carrying_flag != null and dist < 12.0 and randf() < 0.06)):
+		if character.dash_cooldown_timer <= 0.0 and ((character.hp < 45.0 and randf() < 0.025) or (character.carrying_flag != null and dist < 11.0 and randf() < 0.04)):
 			character.wants_dash = true
 	else:
+		_last_target = null
 		# Aim down movement path
 		var look_ahead := character.global_position + desired_dir * 8.0
 		character.aim_point = Vector3(look_ahead.x, 1.15, look_ahead.z)
 		character.wants_fire = false
 		# Dash to cross midfield quickly when running flag or attacking
-		if character.dash_cooldown_timer <= 0.0 and abs(character.global_position.x) < 10.0 and randf() < 0.025:
+		if character.dash_cooldown_timer <= 0.0 and abs(character.global_position.x) < 10.0 and randf() < 0.02:
 			character.wants_dash = true
 
 

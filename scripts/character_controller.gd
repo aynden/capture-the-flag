@@ -5,16 +5,23 @@ signal hit_landed(attacker: CharacterController, victim: CharacterController, el
 signal player_damaged(victim: CharacterController, amount: float)
 
 const MOVE_SPEED := 9.2
-const CARRY_SPEED_MULT := 0.88
+const CARRY_SPEED_MULT := 0.93
 const DASH_SPEED := 21.5
 const DASH_DURATION := 0.22
-const DASH_COOLDOWN := 1.75
+const DASH_COOLDOWN := 1.65
 const MAX_HP := 100.0
 const HOPPER_MAX := 24
-const FIRE_INTERVAL := 0.135
+const FIRE_INTERVAL := 0.145
+const AI_FIRE_INTERVAL := 0.32
 const RELOAD_TIME := 1.15
 const PAINTBALL_SPEED := 38.0
-const RESPAWN_TIME := 3.5
+const AI_PAINTBALL_SPEED := 32.0
+const PLAYER_DAMAGE := 20.0
+const AI_DAMAGE := 9.0
+const PLAYER_RESPAWN_TIME := 4.5
+const AI_RESPAWN_TIME := 7.5
+const REGEN_DELAY := 3.5
+const REGEN_RATE := 14.0
 
 var team: int = 0 # 0 = Blue (Cobalt), 1 = Red (Ember)
 var is_player: bool = false
@@ -25,6 +32,7 @@ var hp: float = MAX_HP
 var is_alive: bool = true
 var respawn_timer: float = 0.0
 var shield_timer: float = 0.0
+var _time_since_hit: float = 99.0
 
 var ammo: int = HOPPER_MAX
 var is_reloading: bool = false
@@ -330,7 +338,12 @@ func _physics_process(delta: float) -> void:
 			respawn()
 		return
 
-	# Timers
+	# Timers & out-of-combat armor regen
+	_time_since_hit += delta
+	if _time_since_hit >= REGEN_DELAY and hp < MAX_HP:
+		hp = minf(MAX_HP, hp + REGEN_RATE * delta)
+		_update_hp_bar()
+
 	if shield_timer > 0.0:
 		shield_timer -= delta
 		if _shield_dome:
@@ -416,7 +429,7 @@ func _start_reload() -> void:
 
 func _fire_paintball() -> void:
 	ammo -= 1
-	fire_cooldown = FIRE_INTERVAL
+	fire_cooldown = FIRE_INTERVAL if is_player else AI_FIRE_INTERVAL
 	_recoil = 1.0
 	_muzzle_flash_timer = 0.045
 	_muzzle_mesh.visible = true
@@ -430,8 +443,8 @@ func _fire_paintball() -> void:
 		dir = Vector3(-sin(_aim_yaw), 0.0, -cos(_aim_yaw))
 	dir = dir.normalized()
 
-	# Subtle realistic paintball dispersion
-	var spread := 0.022 if is_player else 0.048
+	# Crisp player accuracy vs forgiving dodgeable AI spread
+	var spread := 0.022 if is_player else 0.088
 	dir = dir.rotated(Vector3.UP, randf_range(-spread, spread))
 	dir.y += randf_range(-0.008, 0.016)
 	dir = dir.normalized()
@@ -439,7 +452,9 @@ func _fire_paintball() -> void:
 	if projectile_container:
 		var proj := PaintballProjectile.new()
 		projectile_container.add_child(proj)
-		proj.setup(team, self, spawn_origin, dir, PAINTBALL_SPEED, paint_color, splatter_manager, audio_manager)
+		var spd := PAINTBALL_SPEED if is_player else AI_PAINTBALL_SPEED
+		var dmg := PLAYER_DAMAGE if is_player else AI_DAMAGE
+		proj.setup(team, self, spawn_origin, dir, spd, paint_color, splatter_manager, audio_manager, dmg)
 
 	if audio_manager:
 		var vol := -7.5 if is_player else -17.5
@@ -514,6 +529,7 @@ func apply_paint_hit(amount: float, attacker: Node3D, hit_dir: Vector3, hit_colo
 		return
 
 	hp -= amount
+	_time_since_hit = 0.0
 	_hit_flash_timer = 0.09
 	for m in _meshes:
 		m.material_overlay = _flash_overlay_mat
@@ -546,7 +562,7 @@ func _update_hp_bar() -> void:
 func _tag_out(hit_color: Color) -> void:
 	is_alive = false
 	hp = 0.0
-	respawn_timer = RESPAWN_TIME
+	respawn_timer = PLAYER_RESPAWN_TIME if is_player else AI_RESPAWN_TIME
 	wants_fire = false
 	_dash_particles.emitting = false
 	_muzzle_mesh.visible = false
@@ -583,6 +599,7 @@ func _tag_out(hit_color: Color) -> void:
 func respawn() -> void:
 	is_alive = true
 	hp = MAX_HP
+	_time_since_hit = 99.0
 	ammo = HOPPER_MAX
 	is_reloading = false
 	reload_timer = 0.0
